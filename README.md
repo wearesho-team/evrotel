@@ -17,6 +17,40 @@ You can use [Config](./src/Config.php) to configure app.
 Also, [Environment Config](./src/EnvironmentConfig.php) available:
 - **EVROTEL_TOKEN** - token received from Evrotel manager
 
+## Receiver
+
+```php
+<?php
+
+use Wearesho\Evrotel;
+
+/** @var Evrotel\ConfigInterface $config */
+
+$receiver = new Evrotel\Receiver($config);
+
+try {
+    $request = $receiver->getRequest();
+    
+    if($request instanceof Evrotel\Receiver\Request\Start) {
+        /**
+          * You have to return ID in response body
+          * to receive it in call end request  
+          */
+        return 1;
+    } elseif ($request instanceof Evrotel\Receiver\Request\End) {
+        // Do something with call end request
+        
+        return;
+    }
+}
+catch (Evrotel\Exceptions\AccessDenied $denied) {
+    // Return 403
+}
+catch(Evrotel\Exceptions\BadRequest $badRequest) {
+    // Return 400
+}
+```
+
 TODO: Write usage docs
 
 ## Contributors

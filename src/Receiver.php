@@ -4,7 +4,6 @@ namespace Wearesho\Evrotel;
 
 use Carbon\Carbon;
 
-
 /**
  * Class Receiver
  * @package Wearesho\Evrotel
@@ -86,7 +85,6 @@ class Receiver
                 $_POST['callid'],
                 $duration,
                 $_POST['recfile']
-
             );
         } catch (\TypeError $error) {
             throw new Exceptions\BadRequest("Invalid argument type", 2, $error);
