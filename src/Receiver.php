@@ -30,7 +30,7 @@ class Receiver
             throw new Exceptions\AccessDenied();
         }
 
-        $callStatus = $_POST['callstatus'];
+        $callStatus = $_POST['callstatus'] ?? null;
         if (is_null($callStatus)) {
             throw new Exceptions\BadRequest("Missing callstatus");
         }
@@ -52,13 +52,15 @@ class Receiver
     protected function getStartRequest(): Receiver\Request\Start
     {
         try {
-            $date = Carbon::createFromFormat('Y-m-d H:i:s', $_POST['date']);
+            $date = array_key_exists('date', $_POST)
+                ? Carbon::createFromFormat('Y-m-d H:i:s', $_POST['date'])
+                : null;
 
             return new Receiver\Request\Start(
-                $_POST['direction'],
+                $_POST['direction'] ?? null,
                 $date,
-                $_POST['numberA'],
-                $_POST['numberB']
+                $_POST['numberA'] ?? null,
+                $_POST['numberB'] ?? null
             );
         } catch (\TypeError $error) {
             throw new Exceptions\BadRequest("Invalid argument type", 2, $error);
@@ -74,17 +76,22 @@ class Receiver
     protected function getEndRequest(): Receiver\Request\End
     {
         try {
-            $date = Carbon::createFromFormat('Y-m-d H:i:s', $_POST['date']);
+            $date = array_key_exists('date', $_POST)
+                ? Carbon::createFromFormat('Y-m-d H:i:s', $_POST['date'])
+                : null;
+
             /** @noinspection PhpUnhandledExceptionInspection */
-            $duration = new \DateInterval('PT' . ((int)$_POST['billsec']) . 'S');
+            $duration = array_key_exists('billsec', $_POST)
+                ? new \DateInterval('PT' . ((int)$_POST['billsec']) . 'S')
+                : null;
 
             return new Receiver\Request\End(
-                $_POST['direction'],
+                $_POST['direction'] ?? null,
                 $date,
-                $_POST['disposition'],
-                $_POST['callid'],
+                $_POST['disposition'] ?? null,
+                $_POST['callid'] ?? null,
                 $duration,
-                $_POST['recfile']
+                $_POST['recfile'] ?? null
             );
         } catch (\TypeError $error) {
             throw new Exceptions\BadRequest("Invalid argument type", 2, $error);

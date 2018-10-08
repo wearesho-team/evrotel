@@ -69,11 +69,6 @@ class End extends Evrotel\Receiver\Request
         return $this->duration;
     }
 
-    public function getDate(): \DateTime
-    {
-        return $this->date;
-    }
-
     private function validateDisposition(string $disposition): void
     {
         $isDispositionValid = in_array($disposition, [
