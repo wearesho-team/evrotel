@@ -12,6 +12,11 @@ composer require wearesho-team/evrotel
 
 ## Usage
 
+### Configuration
+You can use [Config](./src/Config.php) to configure app.
+Also, [Environment Config](./src/EnvironmentConfig.php) available:
+- **EVROTEL_TOKEN** - token received from Evrotel manager
+
 TODO: Write usage docs
 
 ## Contributors
