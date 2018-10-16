@@ -51,7 +51,46 @@ catch(Evrotel\Exceptions\BadRequest $badRequest) {
 }
 ```
 
-TODO: Write usage docs
+## Auto Dial
+Before call initiating you need to push media file
+
+```php
+<?php
+
+use Wearesho\Evrotel;
+
+/** @var Evrotel\ConfigInterface $config */
+/** @var GuzzleHttp\Client $client */
+
+$repository = new Evrotel\AutoDial\MediaRepository($config, $client);
+$link = 'https://server.com/file.wav'; // Public link to auto dial file, Mono, 16 Bits,8000Hz, wav
+
+try {
+    $fileName = $repository->push($link);
+}
+catch(Evrotel\Exceptions\AutoDial\PushMedia $media) {
+    // handle errors
+}
+```
+
+After pushing media you can use your file to make dials:
+```php
+<?php
+
+use Wearesho\Evrotel;
+
+/** @var Evrotel\ConfigInterface $config */
+/** @var GuzzleHttp\Client $client */
+
+$worker = new Evrotel\AutoDial\Worker($config, $client);
+
+/** @var string $fileName returned from MediaRepository */
+/** @var string $phone in format 380XXXXXXXXX */
+
+$request = new Evrotel\AutoDial\Request($fileName, $phone);
+
+$worker->push($request);
+```
 
 ## Contributors
 - [Alexander <Horat1us> Letnikow](mailto:reclamme@gmail.com)
