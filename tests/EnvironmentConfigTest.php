@@ -13,6 +13,8 @@ use Wearesho\Evrotel;
 class EnvironmentConfigTest extends TestCase
 {
     protected const TEST_TOKEN = 'testEnvironmentToken';
+    protected const TEST_BILL_CODE = 6667;
+    protected const TEST_BASE_URL = 'https://test.dev/';
 
     /** @var Evrotel\EnvironmentConfig */
     protected $config;
@@ -32,5 +34,27 @@ class EnvironmentConfigTest extends TestCase
         $this->expectException(MissingEnvironmentException::class);
         putenv('EVROTEL_TOKEN');
         $this->config->getToken();
+    }
+
+    public function testGetBillCode(): void
+    {
+        putenv('EVROTEL_BILL_CODE=' . static::TEST_BILL_CODE);
+        $billCode = $this->config->getBillCode();
+        $this->assertEquals(static::TEST_BILL_CODE, $billCode);
+
+        $this->expectException(MissingEnvironmentException::class);
+        putenv('EVROTEL_BILL_CODE');
+        $this->config->getBillCode();
+    }
+
+    public function testGetBaseUrl(): void
+    {
+        putenv('EVROTEL_BASE_URL=' . static::TEST_BASE_URL);
+        $baseUrl = $this->config->getBaseUrl();
+        $this->assertEquals(static::TEST_BASE_URL, $baseUrl);
+
+        putenv('EVROTEL_BASE_URL');
+        $defaultBaseUrl = $this->config->getBaseUrl();
+        $this->assertEquals(Evrotel\ConfigInterface::DEFAULT_BASE_URL, $defaultBaseUrl);
     }
 }
