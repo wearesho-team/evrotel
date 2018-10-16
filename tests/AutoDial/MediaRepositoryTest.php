@@ -44,7 +44,7 @@ class MediaRepositoryTest extends TestCase
     public function testRequest(): void
     {
         $this->mock->append(
-            new GuzzleHttp\Psr7\Response()
+            new GuzzleHttp\Psr7\Response(200, [], 'saved: 6667_sound.wav')
         );
 
         $link = 'https://api.dev/sound.wav';
