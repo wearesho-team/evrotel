@@ -15,9 +15,11 @@ composer require wearesho-team/evrotel
 ### Configuration
 You can use [Config](./src/Config.php) to configure app.
 Also, [Environment Config](./src/EnvironmentConfig.php) available:
-- **EVROTEL_TOKEN** - token received from Evrotel manager
+- **EVROTEL_TOKEN**, string - token received from Evrotel manager
+- **EVROTEL_BILL_CODE**, integer - bill code received from Evrotel manager
+- **EVROTEL_BASE_URL**, string, default `http://m01.sipiko.net/` - base url for auto dial requests
 
-## Receiver
+### Receiver
 
 ```php
 <?php
@@ -51,7 +53,7 @@ catch(Evrotel\Exceptions\BadRequest $badRequest) {
 }
 ```
 
-## Auto Dial
+### Auto Dial
 Before call initiating you need to push media file
 
 ```php
