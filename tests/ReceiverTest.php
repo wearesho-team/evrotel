@@ -18,7 +18,7 @@ class ReceiverTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->receiver = new Evrotel\Receiver(new Evrotel\Config('testToken'));
+        $this->receiver = new Evrotel\Receiver(new Evrotel\Config('testToken', 6667));
         $_SERVER['HTTP_AUTHORIZATION'] = 'testToken';
     }
 
