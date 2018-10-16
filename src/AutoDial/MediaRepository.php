@@ -27,12 +27,14 @@ class MediaRepository
 
     /**
      * @param string $link
+     * @return string saved file name that should be used in
+     * @see Worker
      * @throws GuzzleHttp\Exception\GuzzleException
-     * @todo handle duplications errors (or any others, docs required)
+     * @throws Evrotel\Exceptions\AutoDial\PushMedia
      */
-    public function push(string $link): void
+    public function push(string $link): string
     {
-        $this->client->request(
+        $response = $this->client->request(
             'POST',
             rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/media/index.php',
             [
@@ -45,5 +47,18 @@ class MediaRepository
                 ],
             ]
         );
+
+        $body = (string)$response->getBody();
+        $match = (bool)preg_match(
+            "/saved:\s({$this->config->getBillCode()}_.+\.wav)/",
+            trim($body),
+            $matches
+        );
+
+        if (!$match) {
+            throw new Evrotel\Exceptions\AutoDial\PushMedia($body);
+        }
+
+        return (string)$matches[1];
     }
 }
