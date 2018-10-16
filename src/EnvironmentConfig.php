@@ -26,4 +26,9 @@ class EnvironmentConfig extends Environment\Config implements ConfigInterface
     {
         return (int)$this->getEnv('BILL_CODE');
     }
+
+    public function getBaseUrl(): string
+    {
+        return (string)$this->getEnv('BASE_URL', ConfigInterface::DEFAULT_BASE_URL);
+    }
 }

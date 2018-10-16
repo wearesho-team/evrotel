@@ -17,6 +17,9 @@ trait ConfigTrait
     /** @var string */
     protected $token;
 
+    /** @var string */
+    protected $baseUrl = ConfigInterface::DEFAULT_BASE_URL;
+
     public function getBillCode(): int
     {
         return (int)$this->billCode;
@@ -25,5 +28,10 @@ trait ConfigTrait
     public function getToken(): string
     {
         return (string)$this->token;
+    }
+
+    public function getBaseUrl(): string
+    {
+        return (string)$this->baseUrl;
     }
 }
