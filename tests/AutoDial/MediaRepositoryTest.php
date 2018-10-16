@@ -68,6 +68,22 @@ class MediaRepositoryTest extends TestCase
     }
 
     /**
+     * @expectedException \Wearesho\Evrotel\Exceptions\AutoDial\PushMedia
+     * @expectedExceptionMessage wrong mediafile name
+     */
+    public function testHandleInvalidResponse(): void
+    {
+        $this->mock->append(
+            new GuzzleHttp\Psr7\Response(200, [], 'wrong mediafile name')
+        );
+
+        $link = 'https://invalid';
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->repository->push($link);
+    }
+
+    /**
      * Expected behavior: repository should not handle any error
      *
      * @expectedException \GuzzleHttp\Exception\RequestException
