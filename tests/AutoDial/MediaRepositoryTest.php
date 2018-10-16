@@ -60,6 +60,9 @@ class MediaRepositoryTest extends TestCase
         $this->assertEquals('POST', $request->getMethod());
         $this->assertEquals(static::TOKEN, $request->getHeaderLine('Authorization'));
 
+        $uri = (string)$request->getUri();
+        $this->assertEquals('https://test.dev/html/phpagi/media/index.php', $uri);
+
         $body = (string)$request->getBody();
         $this->assertEquals('billcode=6667&mediafile=https%3A%2F%2Fapi.dev%2Fsound.wav', $body);
     }
