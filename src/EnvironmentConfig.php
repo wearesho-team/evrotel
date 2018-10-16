@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\Evrotel;
 
 use Horat1us\Environment;
@@ -17,6 +19,11 @@ class EnvironmentConfig extends Environment\Config implements ConfigInterface
 
     public function getToken(): string
     {
-        return $this->getEnv('TOKEN');
+        return (string)$this->getEnv('TOKEN');
+    }
+
+    public function getBillCode(): int
+    {
+        return (int)$this->getEnv('BILL_CODE');
     }
 }

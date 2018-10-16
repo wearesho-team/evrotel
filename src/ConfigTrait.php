@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Wearesho\Evrotel;
 
 /**
@@ -9,11 +11,19 @@ namespace Wearesho\Evrotel;
  */
 trait ConfigTrait
 {
+    /** @var int */
+    protected $billCode;
+
     /** @var string */
     protected $token;
 
+    public function getBillCode(): int
+    {
+        return (int)$this->billCode;
+    }
+
     public function getToken(): string
     {
-        return $this->token;
+        return (string)$this->token;
     }
 }
