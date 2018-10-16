@@ -34,7 +34,7 @@ trait RequestTrait
     protected function validateFileName(string $fileName): void
     {
         if (!preg_match('/^.+\.wav$/', $fileName)) {
-            throw new \InvalidArgumentException('File name have to contain .wav extension');
+            throw new \InvalidArgumentException("File name {$fileName} does not have .wav extension");
         }
     }
 }
