@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Wearesho\Evrotel\AutoDial;
 
+use Psr\Http\Message\ResponseInterface;
 use Wearesho\Evrotel;
 use GuzzleHttp;
 
@@ -29,11 +30,11 @@ class Worker
      * @param RequestInterface $request
      * @throws GuzzleHttp\Exception\GuzzleException
      */
-    public function push(RequestInterface $request): void
+    public function push(RequestInterface $request): ResponseInterface
     {
         $mediaFile = $this->config->getBillCode() . '_' . $request->getFileName();
 
-        $this->client->request(
+        return $this->client->request(
             'POST',
             rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/call_worker_api.php',
             [
