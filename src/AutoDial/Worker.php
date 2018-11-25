@@ -32,7 +32,11 @@ class Worker
      */
     public function push(RequestInterface $request): ResponseInterface
     {
-        $mediaFile = $this->config->getBillCode() . '_' . $request->getFileName();
+        $prefix = $this->config->getBillCode() . '_';
+        $mediaFile = $request->getFileName();
+        if (mb_substr($mediaFile, 0, mb_strlen($prefix)) !== $prefix) {
+            $mediaFile = $prefix . $mediaFile;
+        }
 
         return $this->client->request(
             'POST',
