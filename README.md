@@ -17,7 +17,12 @@ You can use [Config](./src/Config.php) to configure app.
 Also, [Environment Config](./src/EnvironmentConfig.php) available:
 - **EVROTEL_TOKEN**, string - token received from Evrotel manager
 - **EVROTEL_BILL_CODE**, integer - bill code received from Evrotel manager
-- **EVROTEL_BASE_URL**, string, default `http://m01.sipiko.net/` - base url for auto dial requests
+- **EVROTEL_BASE_URL**, string, default `http://m01.sipiko.net/` - base url for auto dial requests, statistics files
+
+#### Statistics
+You can use [Config](./src/Statistics/Config.php) to configure statistics client.
+Also, [Environment Config](./src/Statistics/EnvironmentConfig.php) available:
+- **EVROTEL_STATISTICS_BASE_URL**, string, default `https://callme.sipiko.net/` - base url for statistics requests 
 
 ### Receiver
 
@@ -93,6 +98,21 @@ $request = new Evrotel\AutoDial\Request($fileName, $phone);
 
 $worker->push($request);
 ```
+
+### Statistics
+```php
+<?php
+
+use Wearesho\Evrotel;
+
+$baseConfig = new Evrotel\Config($token = 'token', $billCode = 6667);
+$config = new Evrotel\Statistics\Config;
+/** @var GuzzleHttp\Client $guzzle */
+
+$client = new Evrotel\Statistics\Client($baseConfig, $config, $guzzle);
+$client->getCalls($isAuto = true);
+```
+See [Statistics\Call](./src/Statistics/Call.php) for details.
 
 ## Contributors
 - [Alexander <Horat1us> Letnikow](mailto:reclamme@gmail.com)
