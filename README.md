@@ -114,6 +114,30 @@ $client->getCalls($isAuto = true);
 ```
 See [Statistics\Call](./src/Statistics/Call.php) for details.
 
+### Initializer
+To initialize call you need to use [Initializer\Client](./src/Initializer/Client.php).
+```php
+<?php
+
+use Wearesho\Evrotel;
+
+/** @var Evrotel\Config $config */
+/** @var GuzzleHttp\Client $guzzle */
+
+$client = new Evrotel\Initializer\Client($config, $guzzle);
+
+$operators = [
+   '101',
+   '102',  
+];
+try {
+    $client->start('380970000000', $operators);    
+}
+catch(\RuntimeException $exception) {
+    // Evrotel returned `bad` response
+}
+```
+
 ## Contributors
 - [Alexander <Horat1us> Letnikow](mailto:reclamme@gmail.com)
 
