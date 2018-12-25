@@ -127,7 +127,6 @@ class ClientTest extends TestCase
             'billcode=6667&ext=101%2C102&nm=380970000000',
             $body
         );
-
     }
 
     /**
