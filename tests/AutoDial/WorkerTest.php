@@ -69,4 +69,25 @@ class WorkerTest extends TestCase
         $body = (string)$request->getBody();
         $this->assertEquals('billcode=6667&mediafile=6667_file.wav&nm=380000000000', $body);
     }
+
+    public function testFullUrlMediaFileRequest(): void
+    {
+        $this->mock->append(
+            new GuzzleHttp\Psr7\Response()
+        );
+
+        $phone = '380000000000';
+        $fileName = 'https://wearesho.com/file.wav';
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->worker->push(new Evrotel\AutoDial\Request($phone, $fileName));
+
+        $this->assertCount(1, $this->container);
+
+        /** @var GuzzleHttp\Psr7\Request $request */
+        $request = $this->container[0]['request'];
+
+        $body = (string)$request->getBody();
+        $this->assertEquals('billcode=6667&mediafile=6667_file.wav&nm=380000000000', $body);
+    }
 }

@@ -28,15 +28,12 @@ class Worker
 
     /**
      * @param RequestInterface $request
+     * @return ResponseInterface
      * @throws GuzzleHttp\Exception\GuzzleException
      */
     public function push(RequestInterface $request): ResponseInterface
     {
-        $prefix = $this->config->getBillCode() . '_';
-        $mediaFile = $request->getFileName();
-        if (mb_substr($mediaFile, 0, mb_strlen($prefix)) !== $prefix) {
-            $mediaFile = $prefix . $mediaFile;
-        }
+        $mediaFile = $this->filterFileName($request->getFileName());
 
         return $this->client->request(
             'POST',
@@ -52,5 +49,19 @@ class Worker
                 ],
             ]
         );
+    }
+
+    protected function filterFileName(string $fileName): string
+    {
+        if (filter_var($fileName, FILTER_VALIDATE_URL) !== false) {
+            $fileName = ltrim(parse_url($fileName, PHP_URL_PATH), '/');
+        }
+
+        $prefix = $this->config->getBillCode() . '_';
+        if (mb_substr($fileName, 0, mb_strlen($prefix)) !== $prefix) {
+            $fileName = $prefix . $fileName;
+        }
+
+        return $fileName;
     }
 }

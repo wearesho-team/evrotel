@@ -53,6 +53,8 @@ class ClientTest extends TestCase
      */
     public function testAutoUrl(): void
     {
+        Carbon::setTestNow(Carbon::parse('2018-12-25'));
+
         $this->client->getCalls(true);
         $this->assertCount(1, $this->container);
         $this->assertInstanceOf(GuzzleHttp\Psr7\Request::class, $this->container[0]['request'] ?? null);
@@ -62,6 +64,8 @@ class ClientTest extends TestCase
             static::BASE_URL . 'statusers/stat_6667_auto.php?billcode=6667&start=2018-12-25',
             (string)$request->getUri()
         );
+
+        Carbon::setTestNow();
     }
 
     /**
