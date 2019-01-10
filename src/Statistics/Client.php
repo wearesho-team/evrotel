@@ -27,8 +27,7 @@ class Client
         Evrotel\ConfigInterface $baseConfig,
         ConfigInterface $config,
         GuzzleHttp\ClientInterface $client
-    )
-    {
+    ) {
         $this->baseConfig = $baseConfig;
         $this->config = $config;
         $this->client = $client;
