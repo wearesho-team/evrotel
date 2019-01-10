@@ -54,7 +54,7 @@ class Worker
     protected function filterFileName(string $fileName): string
     {
         if (filter_var($fileName, FILTER_VALIDATE_URL) !== false) {
-            $fileName = ltrim(parse_url($fileName, PHP_URL_PATH), '/');
+            $fileName = basename(parse_url($fileName, PHP_URL_PATH));
         }
 
         $prefix = $this->config->getBillCode() . '_';

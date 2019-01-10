@@ -77,7 +77,7 @@ class WorkerTest extends TestCase
         );
 
         $phone = '380000000000';
-        $fileName = 'https://wearesho.com/file.wav';
+        $fileName = 'https://wearesho.com/dir/file.wav';
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $this->worker->push(new Evrotel\AutoDial\Request($phone, $fileName));
