@@ -70,7 +70,12 @@ class Client
             'disposition',
         ];
         $rawCalls = array_filter($body['calls'], function (array $call) use ($requiredAttributes): bool {
-            return count(array_intersect_key(array_flip($requiredAttributes), $call)) === count($requiredAttributes);
+            foreach ($requiredAttributes as $requiredAttribute) {
+                if (!array_key_exists($requiredAttribute, $call) || is_null($call[$requiredAttribute])) {
+                    return false;
+                }
+            }
+            return true;
         });
 
         /** @var Call[] $calls */

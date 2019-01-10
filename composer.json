@@ -15,7 +15,8 @@
     "horat1us/environment-config": "^1.2",
     "guzzlehttp/guzzle": "^6.3",
     "nesbot/carbon": "^1.30",
-    "wearesho-team/base-collection": "^1.0"
+    "wearesho-team/base-collection": "^1.0",
+    "ext-json": "*"
   },
   "require-dev": {
     "phpunit/phpunit": "^7.4",
