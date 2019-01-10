@@ -27,7 +27,8 @@ class Client
         Evrotel\ConfigInterface $baseConfig,
         ConfigInterface $config,
         GuzzleHttp\ClientInterface $client
-    ) {
+    )
+    {
         $this->baseConfig = $baseConfig;
         $this->config = $config;
         $this->client = $client;
@@ -57,7 +58,20 @@ class Client
         );
 
         $body = json_decode((string)$response->getBody(), true);
-        $rawCalls = $body['calls'];
+        $requiredAttributes = [
+            'recfile',
+            'calldate',
+            'channel',
+            'id',
+            'billsec',
+            'direction',
+            'numberA',
+            'numberB',
+            'disposition',
+        ];
+        $rawCalls = array_filter($body['calls'], function (array $call) use ($requiredAttributes): bool {
+            return count(array_intersect_key(array_flip($requiredAttributes), $call)) === count($requiredAttributes);
+        });
 
         /** @var Call[] $calls */
         $calls = array_map(function (array $raw) use ($isAuto): Call {
