@@ -12,8 +12,9 @@ class Config implements ConfigInterface
 {
     use ConfigTrait;
 
-    public function __construct(string $baseUrl = ConfigInterface::DEFAULT_BASE_URL)
+    public function __construct(string $baseUrl = ConfigInterface::DEFAULT_BASE_URL, string $autoDialNumber = null)
     {
         $this->baseUrl = $baseUrl;
+        $this->autoDialNumber = $autoDialNumber;
     }
 }

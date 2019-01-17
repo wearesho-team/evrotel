@@ -90,6 +90,12 @@ class Client
         $file = rtrim($this->baseConfig->getBaseUrl(), '/')
             . str_replace('/var/www', '', $raw['recfile']);
         $date = Carbon::parse($raw['calldate']);
+        $from = $raw['numberA'];
+
+        $autoDialNumber = $this->config->getAutoDialNumber();
+        if (!is_null($autoDialNumber) && $from === $autoDialNumber) {
+            $isAuto = true;
+        }
 
         return new Call(
             $raw['channel'],
@@ -97,7 +103,7 @@ class Client
             $date,
             $raw['billsec'],
             $raw['direction'],
-            $raw['numberA'],
+            $from,
             $raw['numberB'],
             $raw['disposition'],
             $file,

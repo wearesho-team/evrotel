@@ -29,6 +29,8 @@ class ClientTest extends TestCase
     /** @var Evrotel\Statistics\Client */
     protected $client;
 
+    protected $clientDependencies = [];
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -45,7 +47,12 @@ class ClientTest extends TestCase
         $baseConfig = new Evrotel\Config(static::TOKEN, static::BILL_CODE, static::FILE_BASE_URL);
         $config = new Evrotel\Statistics\Config(static::BASE_URL);
 
-        $this->client = new Evrotel\Statistics\Client($baseConfig, $config, $client);
+        $this->clientDependencies = [
+            $baseConfig,
+            $config,
+            $client
+        ];
+        $this->client = new Evrotel\Statistics\Client(...$this->clientDependencies);
     }
 
     /**
@@ -132,6 +139,49 @@ class ClientTest extends TestCase
                 Evrotel\Call\Disposition::FAILED,
                 static::FILE_BASE_URL . 'html/wav/101/2018-12-25/1545721383.15474065-1000000.wav',
                 false
+            ),
+            $calls[1]
+        );
+    }
+
+    /**
+     * @throws GuzzleHttp\Exception\GuzzleException
+     */
+    public function testParsingAutoFromConfig(): void
+    {
+        $clientDependencies = $this->clientDependencies;
+        $clientDependencies[1] = new Evrotel\Statistics\Config(static::BASE_URL, '001');
+        $client = new Evrotel\Statistics\Client(...$clientDependencies);
+
+        $calls = $client->getCalls(false);
+        $this->assertCount(2, $calls);
+        $this->assertEquals(
+            new Evrotel\Statistics\Call(
+                'Local/380971642002@out_vpbx_007-0000e57d;2',
+                63705443,
+                Carbon::parse("2018-12-25T09:03:03+00:00"),
+                0,
+                Evrotel\Call\Direction::OUTCOME,
+                '001',
+                '380971642002',
+                Evrotel\Call\Disposition::FAILED,
+                static::FILE_BASE_URL . 'html/wav/007001/2018-12-25/1545721383.15474064-1196118992.wav',
+                true
+            ),
+            $calls[0]
+        );
+        $this->assertEquals(
+            new Evrotel\Statistics\Call(
+                "Local/380994942964@out_vpbx_007-0000e57e;2",
+                63705451,
+                Carbon::parse("2018-12-25T09:03:03+00:00"),
+                0,
+                Evrotel\Call\Direction::OUTCOME,
+                '001',
+                '380994942964',
+                Evrotel\Call\Disposition::FAILED,
+                static::FILE_BASE_URL . 'html/wav/101/2018-12-25/1545721383.15474065-1000000.wav',
+                true
             ),
             $calls[1]
         );
