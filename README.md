@@ -23,6 +23,8 @@ Also, [Environment Config](./src/EnvironmentConfig.php) available:
 You can use [Config](./src/Statistics/Config.php) to configure statistics client.
 Also, [Environment Config](./src/Statistics/EnvironmentConfig.php) available:
 - **EVROTEL_STATISTICS_BASE_URL**, string, default `https://callme.sipiko.net/` - base url for statistics requests 
+- **EVROTEL_STATISTICS_AUTODIAL_NUMBER**, string, default `null` - if specified, all statistics call with same `from`
+will be marked as auto dials. 
 
 ### Receiver
 
