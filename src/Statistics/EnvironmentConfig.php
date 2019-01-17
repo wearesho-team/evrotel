@@ -24,4 +24,15 @@ class EnvironmentConfig extends Environment\Config implements ConfigInterface
     {
         return $this->getEnv('BASE_URL', ConfigInterface::DEFAULT_BASE_URL);
     }
+
+    /**
+     * When fetching statistics if `from` equals this number
+     * call will be marked as auto
+     *
+     * @return null|string
+     */
+    public function getAutoDialNumber(): ?string
+    {
+        return $this->getEnv('AUTODIAL_NUMBER', [$this, 'null']);
+    }
 }

@@ -14,6 +14,7 @@ use Wearesho\Evrotel;
 class ConfigTest extends TestCase
 {
     protected const BASE_URL = 'https://wearesho.com/';
+    protected const AUTODIAL_NUMBER = '001';
 
     /** @var Evrotel\Statistics\Config */
     protected $config;
@@ -21,7 +22,7 @@ class ConfigTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->config = new Evrotel\Statistics\Config(static::BASE_URL);
+        $this->config = new Evrotel\Statistics\Config(static::BASE_URL, static::AUTODIAL_NUMBER);
     }
 
     public function testGetBaseUrl(): void
@@ -29,6 +30,14 @@ class ConfigTest extends TestCase
         $this->assertEquals(
             static::BASE_URL,
             $this->config->getBaseUrl()
+        );
+    }
+
+    public function getGetAutoDialNumber(): void
+    {
+        $this->assertEquals(
+            static::AUTODIAL_NUMBER,
+            $this->config->getAutoDialNumber()
         );
     }
 }

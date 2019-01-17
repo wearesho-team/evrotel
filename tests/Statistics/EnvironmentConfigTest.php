@@ -43,4 +43,19 @@ class EnvironmentConfigTest extends TestCase
         );
         putenv(static::PREFIX . 'BASE_URL');
     }
+
+    public function testNullAutoDialNumber(): void
+    {
+        putenv(static::PREFIX . 'AUTODIAL_NUMBER');
+        $this->assertNull($this->config->getAutoDialNumber());
+    }
+
+    public function tesAutoDialNumber(): void
+    {
+        putenv(static::PREFIX . 'AUTODIAL_NUMBER=001');
+        $this->assertEquals(
+            '001',
+            $this->config->getAutoDialNumber()
+        );
+    }
 }
