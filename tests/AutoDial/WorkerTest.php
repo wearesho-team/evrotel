@@ -46,14 +46,11 @@ class WorkerTest extends TestCase
     public function testRequest(): void
     {
         $this->mock->append(
-            new GuzzleHttp\Psr7\Response()
+            new GuzzleHttp\Psr7\Response(200, [], Evrotel\Call\Disposition::ANSWERED)
         );
 
-        $phone = '380000000000';
-        $fileName = 'file.wav';
-
         /** @noinspection PhpUnhandledExceptionInspection */
-        $this->worker->push(new Evrotel\AutoDial\Request($phone, $fileName));
+        $this->worker->push($this->getRequest());
 
         $this->assertCount(1, $this->container);
 
@@ -73,14 +70,11 @@ class WorkerTest extends TestCase
     public function testFullUrlMediaFileRequest(): void
     {
         $this->mock->append(
-            new GuzzleHttp\Psr7\Response()
+            new GuzzleHttp\Psr7\Response(200, [], Evrotel\Call\Disposition::ANSWERED)
         );
 
-        $phone = '380000000000';
-        $fileName = 'https://wearesho.com/dir/file.wav';
-
         /** @noinspection PhpUnhandledExceptionInspection */
-        $this->worker->push(new Evrotel\AutoDial\Request($phone, $fileName));
+        $this->worker->push($this->getRequest());
 
         $this->assertCount(1, $this->container);
 
@@ -89,5 +83,47 @@ class WorkerTest extends TestCase
 
         $body = (string)$request->getBody();
         $this->assertEquals('billcode=6667&mediafile=6667_file.wav&nm=380000000000', $body);
+    }
+
+    /**
+     * @expectedException \Wearesho\Evrotel\AutoDial\Exception
+     * @expectedExceptionCode 0
+     * @expectedExceptionMessage Error while dialing to 380000000000 using file file.wav. Response: Server Error
+     */
+    public function testCatchingResponseException(): void
+    {
+        $this->mock->append(
+            new GuzzleHttp\Exception\RequestException(
+                "Some Fail",
+                new GuzzleHttp\Psr7\Request('post', static::BASE_URL),
+                new GuzzleHttp\Psr7\Response(500, [], 'Server Error')
+            )
+        );
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->worker->push($this->getRequest());
+    }
+
+    /**
+     * @expectedException \Wearesho\Evrotel\AutoDial\Exception
+     * @expectedExceptionCode 1
+     * @expectedExceptionMessage Error while dialing to 380000000000 using file file.wav. Response: TimeLimit 60 sec !
+     */
+    public function testThrowingExceptionIfNoDispositionReturned(): void
+    {
+        $this->mock->append(
+            new GuzzleHttp\Psr7\Response(200, [], 'TimeLimit 60 sec !')
+        );
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->worker->push($this->getRequest());
+    }
+
+    protected function getRequest(): Evrotel\AutoDial\Request
+    {
+        $phone = '380000000000';
+        $fileName = 'file.wav';
+
+        return new Evrotel\AutoDial\Request($phone, $fileName);
     }
 }
