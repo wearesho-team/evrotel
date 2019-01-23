@@ -28,7 +28,7 @@ class Worker
     /**
      * @param RequestInterface $request
      * @return string one of dispositions constants
-     * @see Evrotel\Call\Disposition
+     * @see Disposition
      *
      * @throws Exception
      * @throws GuzzleHttp\Exception\GuzzleException
@@ -53,20 +53,25 @@ class Worker
                 ]
             );
         } catch (GuzzleHttp\Exception\RequestException $e) {
-            throw new Exception($request, $e->getResponse(), 0);
+            $response = $e->getResponse();
+            throw new Exception($request, $response, 0);
         }
 
         $disposition = trim((string)$response->getBody());
+        if (strpos((string)$disposition, "TimeLimit") !== false) {
+            throw new Exception\TimeLimit($request, $response, 2);
+        }
         $isDisposition = in_array($disposition, [
-            Evrotel\Call\Disposition::NO_ANSWER,
-            Evrotel\Call\Disposition::ANSWERED,
-            Evrotel\Call\Disposition::CONGESTION,
-            Evrotel\Call\Disposition::BUSY,
-            Evrotel\Call\Disposition::FAILED,
-        ]);
+            Disposition::NO_ANSWER,
+            Disposition::ANSWER,
+            Disposition::CONGESTION,
+            Disposition::BUSY,
+            Disposition::BAD,
+            Disposition::NONE,
+        ], true);
 
         if (!$isDisposition) {
-            throw new Exception($request, $response, 1);
+            throw new Exception\InvalidDisposition($request, $response, 1);
         }
 
         return $disposition;

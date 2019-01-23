@@ -46,7 +46,7 @@ class WorkerTest extends TestCase
     public function testRequest(): void
     {
         $this->mock->append(
-            new GuzzleHttp\Psr7\Response(200, [], Evrotel\Call\Disposition::ANSWERED)
+            new GuzzleHttp\Psr7\Response(200, [], Evrotel\AutoDial\Disposition::ANSWER)
         );
 
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -70,7 +70,7 @@ class WorkerTest extends TestCase
     public function testFullUrlMediaFileRequest(): void
     {
         $this->mock->append(
-            new GuzzleHttp\Psr7\Response(200, [], Evrotel\Call\Disposition::ANSWERED)
+            new GuzzleHttp\Psr7\Response(200, [], Evrotel\AutoDial\Disposition::ANSWER)
         );
 
         /** @noinspection PhpUnhandledExceptionInspection */
@@ -105,11 +105,26 @@ class WorkerTest extends TestCase
     }
 
     /**
-     * @expectedException \Wearesho\Evrotel\AutoDial\Exception
+     * @expectedException \Wearesho\Evrotel\AutoDial\Exception\InvalidDisposition
      * @expectedExceptionCode 1
-     * @expectedExceptionMessage Error while dialing to 380000000000 using file file.wav. Response: TimeLimit 60 sec !
+     * @expectedExceptionMessage Error while dialing to 380000000000 using file file.wav. Response: some unknown string
      */
     public function testThrowingExceptionIfNoDispositionReturned(): void
+    {
+        $this->mock->append(
+            new GuzzleHttp\Psr7\Response(200, [], 'some unknown string')
+        );
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->worker->push($this->getRequest());
+    }
+
+    /**
+     * @expectedException \Wearesho\Evrotel\AutoDial\Exception\TimeLimit
+     * @expectedExceptionCode 2
+     * @expectedExceptionMessage Error while dialing to 380000000000 using file file.wav. Response: TimeLimit 60 sec !
+     */
+    public function testThrowingExceptionIfTimeLimitReturned(): void
     {
         $this->mock->append(
             new GuzzleHttp\Psr7\Response(200, [], 'TimeLimit 60 sec !')
