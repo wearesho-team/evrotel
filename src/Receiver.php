@@ -52,7 +52,7 @@ class Receiver
     protected function getStartRequest(): Receiver\Request\Start
     {
         try {
-            $date = array_key_exists('date', $_POST)
+            $date = isset($_POST['date']) || \array_key_exists('date', $_POST)
                 ? Carbon::createFromFormat('Y-m-d H:i:s', $_POST['date'])
                 : null;
 
@@ -76,12 +76,12 @@ class Receiver
     protected function getEndRequest(): Receiver\Request\End
     {
         try {
-            $date = array_key_exists('date', $_POST)
+            $date = isset($_POST['date']) || \array_key_exists('date', $_POST)
                 ? Carbon::createFromFormat('Y-m-d H:i:s', $_POST['date'])
                 : null;
 
             /** @noinspection PhpUnhandledExceptionInspection */
-            $duration = array_key_exists('billsec', $_POST)
+            $duration = isset($_POST['billsec']) || \array_key_exists('billsec', $_POST)
                 ? new \DateInterval('PT' . ((int)$_POST['billsec']) . 'S')
                 : null;
 
