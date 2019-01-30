@@ -55,9 +55,8 @@ abstract class Request
             Evrotel\Call\Direction::INCOME => 0,
             Evrotel\Call\Direction::OUTCOME => 0,
         ];
-        $isDirectionValid = isset($data[$direction]);
 
-        if (!$isDirectionValid) {
+        if (!isset($data[$direction])) {
             throw new \InvalidArgumentException("Invalid Direction");
         }
     }
