@@ -51,12 +51,12 @@ abstract class Request
 
     private function validateDirection(string $direction): void
     {
-        $isDirectionValid = in_array($direction, [
-            Evrotel\Call\Direction::INCOME,
-            Evrotel\Call\Direction::OUTCOME
-        ]);
+        $directions = [
+            Evrotel\Call\Direction::INCOME => 0,
+            Evrotel\Call\Direction::OUTCOME => 0,
+        ];
 
-        if (!$isDirectionValid) {
+        if (!isset($directions[$direction])) {
             throw new \InvalidArgumentException("Invalid Direction");
         }
     }
