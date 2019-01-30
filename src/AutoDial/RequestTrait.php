@@ -26,14 +26,14 @@ trait RequestTrait
 
     protected function validatePhone(string $phone): void
     {
-        if (!preg_match('/^380\d{9}$/', $phone)) {
+        if (!\preg_match('/^380\d{9}$/', $phone)) {
             throw new \InvalidArgumentException("Invalid ukranian phone format: {$phone}");
         }
     }
 
     protected function validateFileName(string $fileName): void
     {
-        if (!preg_match('/^.+\.wav$/', $fileName)) {
+        if (!\preg_match('/^.+\.wav$/', $fileName)) {
             throw new \InvalidArgumentException("File name {$fileName} does not have .wav extension");
         }
     }

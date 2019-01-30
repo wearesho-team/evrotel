@@ -36,7 +36,7 @@ class MediaRepository
     {
         $response = $this->client->request(
             'POST',
-            rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/media/index.php',
+            \rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/media/index.php',
             [
                 GuzzleHttp\RequestOptions::FORM_PARAMS => [
                     'billcode' => $this->config->getBillCode(),
@@ -49,9 +49,9 @@ class MediaRepository
         );
 
         $body = (string)$response->getBody();
-        $match = (bool)preg_match(
+        $match = (bool)\preg_match(
             "/saved:\s({$this->config->getBillCode()}_.+\.wav)/",
-            trim($body),
+            \trim($body),
             $matches
         );
 

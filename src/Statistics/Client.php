@@ -47,7 +47,7 @@ class Client
 
         $response = $this->client->request(
             'GET',
-            rtrim($this->config->getBaseUrl(), '/') . "/statusers/stat_{$billCode}{$suffix}.php",
+            \rtrim($this->config->getBaseUrl(), '/') . "/statusers/stat_{$billCode}{$suffix}.php",
             [
                 GuzzleHttp\RequestOptions::QUERY => [
                     'billcode' => $billCode,
@@ -56,7 +56,7 @@ class Client
             ]
         );
 
-        $body = json_decode((string)$response->getBody(), true);
+        $body = \json_decode((string)$response->getBody(), true);
         $requiredAttributes = [
             'recfile',
             'calldate',
@@ -68,9 +68,9 @@ class Client
             'numberB',
             'disposition',
         ];
-        $rawCalls = array_filter($body['calls'], function (array $call) use ($requiredAttributes): bool {
+        $rawCalls = \array_filter($body['calls'], function (array $call) use ($requiredAttributes): bool {
             foreach ($requiredAttributes as $requiredAttribute) {
-                if (!array_key_exists($requiredAttribute, $call) || is_null($call[$requiredAttribute])) {
+                if (!\array_key_exists($requiredAttribute, $call) || \is_null($call[$requiredAttribute])) {
                     return false;
                 }
             }
@@ -78,7 +78,7 @@ class Client
         });
 
         /** @var Call[] $calls */
-        $calls = array_map(function (array $raw) use ($isAuto): Call {
+        $calls = \array_map(function (array $raw) use ($isAuto): Call {
             return $this->parseCall($raw, $isAuto);
         }, $rawCalls);
 
@@ -87,13 +87,13 @@ class Client
 
     private function parseCall(array $raw, bool $isAuto): Call
     {
-        $file = rtrim($this->baseConfig->getBaseUrl(), '/')
-            . str_replace('/var/www', '', $raw['recfile']);
+        $file = \rtrim($this->baseConfig->getBaseUrl(), '/')
+            . \str_replace('/var/www', '', $raw['recfile']);
         $date = Carbon::parse($raw['calldate']);
         $from = $raw['numberA'];
 
         $autoDialNumber = $this->config->getAutoDialNumber();
-        if (!is_null($autoDialNumber) && $from === $autoDialNumber) {
+        if (!\is_null($autoDialNumber) && $from === $autoDialNumber) {
             $isAuto = true;
         }
 

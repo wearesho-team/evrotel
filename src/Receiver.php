@@ -26,12 +26,12 @@ class Receiver
     public function getRequest(): Receiver\Request
     {
         $authorization = $_SERVER['HTTP_AUTHORIZATION'] ?? null;
-        if (is_null($authorization) || $authorization !== $this->config->getToken()) {
+        if (\is_null($authorization) || $authorization !== $this->config->getToken()) {
             throw new Exceptions\AccessDenied();
         }
 
         $callStatus = $_POST['callstatus'] ?? null;
-        if (is_null($callStatus)) {
+        if (\is_null($callStatus)) {
             throw new Exceptions\BadRequest("Missing callstatus");
         }
 

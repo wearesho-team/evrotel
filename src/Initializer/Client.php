@@ -37,11 +37,11 @@ class Client
 
         $response = $this->client->request(
             'POST',
-            rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/call_worker_ext_api.php',
+            \rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/call_worker_ext_api.php',
             [
                 GuzzleHttp\RequestOptions::FORM_PARAMS => [
                     'billcode' => $this->config->getBillCode(),
-                    'ext' => implode(",", $from),
+                    'ext' => \implode(",", $from),
                     'nm' => $receiver,
                 ],
                 GuzzleHttp\RequestOptions::HEADERS => [
@@ -51,14 +51,14 @@ class Client
         );
 
         $body = (string)$response->getBody();
-        if (preg_match('/^bad$/', $body)) {
+        if (\preg_match('/^bad$/', $body)) {
             throw new \RuntimeException("Bad response from Evrotel");
         }
     }
 
     protected function validateReceiver(string $receiver): void
     {
-        if (!preg_match('/^380\d{9}$/', $receiver)) {
+        if (!\preg_match('/^380\d{9}$/', $receiver)) {
             throw new \InvalidArgumentException(
                 "Unsupported receiver format, expected 380XXXXXXXXX: " . $receiver
             );
@@ -68,16 +68,16 @@ class Client
     protected function validateFrom(array &$from): void
     {
         foreach ($from as &$number) {
-            if (is_object($number) && method_exists($number, '__toString')) {
+            if (\is_object($number) && \method_exists($number, '__toString')) {
                 $number = (string)$number;
                 continue;
             }
-            if (is_string($number)) {
+            if (\is_string($number)) {
                 continue;
             }
             throw new \InvalidArgumentException(
                 "Invalid from, expected string or string-convertible object: "
-                . var_export($number, true)
+                . \var_export($number, true)
             );
         }
     }
