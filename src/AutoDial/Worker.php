@@ -40,7 +40,7 @@ class Worker
         try {
             $response = $this->client->request(
                 'POST',
-                rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/call_worker_api.php',
+                \rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/call_worker_api.php',
                 [
                     GuzzleHttp\RequestOptions::FORM_PARAMS => [
                         'billcode' => $this->config->getBillCode(),
@@ -57,8 +57,8 @@ class Worker
             throw new Exception($request, $response, 0);
         }
 
-        $disposition = trim((string)$response->getBody());
-        if (strpos((string)$disposition, "TimeLimit") !== false) {
+        $disposition = \trim((string)$response->getBody());
+        if (\strpos((string)$disposition, "TimeLimit") !== false) {
             throw new Exception\TimeLimit($request, $response, 2);
         }
         $isDisposition = in_array($disposition, [
@@ -79,12 +79,12 @@ class Worker
 
     protected function filterFileName(string $fileName): string
     {
-        if (filter_var($fileName, FILTER_VALIDATE_URL) !== false) {
-            $fileName = basename(parse_url($fileName, PHP_URL_PATH));
+        if (\filter_var($fileName, FILTER_VALIDATE_URL) !== false) {
+            $fileName = \basename(\parse_url($fileName, PHP_URL_PATH));
         }
 
         $prefix = $this->config->getBillCode() . '_';
-        if (mb_substr($fileName, 0, mb_strlen($prefix)) !== $prefix) {
+        if (\mb_substr($fileName, 0, \mb_strlen($prefix)) !== $prefix) {
             $fileName = $prefix . $fileName;
         }
 
