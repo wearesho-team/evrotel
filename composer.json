@@ -23,7 +23,7 @@
     "squizlabs/php_codesniffer": "^3.3"
   },
   "scripts": {
-    "lint": ".phpcs --standard=PSR2 ./src ./tests",
+    "lint": "phpcs --standard=PSR2 ./src ./tests",
     "phpcbf": "phpcbf --standard=PSR2 ./src ./tests",
     "cover": "phpunit --coverage-clover=coverage.xml",
     "test": "phpunit"
