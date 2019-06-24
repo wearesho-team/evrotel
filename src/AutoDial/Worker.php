@@ -40,7 +40,7 @@ class Worker
         try {
             $response = $this->client->request(
                 'POST',
-                rtrim($this->config->getBaseUrl(), '/') . '/html/phpagi/call_worker_api.php',
+                $this->config->getAutoDialUrl(),
                 [
                     GuzzleHttp\RequestOptions::FORM_PARAMS => [
                         'billcode' => $this->config->getBillCode(),

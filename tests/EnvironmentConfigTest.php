@@ -15,6 +15,7 @@ class EnvironmentConfigTest extends TestCase
     protected const TEST_TOKEN = 'testEnvironmentToken';
     protected const TEST_BILL_CODE = 6667;
     protected const TEST_BASE_URL = 'https://test.dev/';
+    protected const TEST_AUTO_DIAL_URL = 'https://test.dev/call_worker_api.php';
 
     /** @var Evrotel\EnvironmentConfig */
     protected $config;
@@ -56,5 +57,16 @@ class EnvironmentConfigTest extends TestCase
         putenv('EVROTEL_BASE_URL');
         $defaultBaseUrl = $this->config->getBaseUrl();
         $this->assertEquals(Evrotel\ConfigInterface::DEFAULT_BASE_URL, $defaultBaseUrl);
+    }
+
+    public function testGetAutoDialUrl(): void
+    {
+        putenv('EVROTEL_AUTO_DIAL_URL=' . static::TEST_AUTO_DIAL_URL);
+        $autoDialUrl = $this->config->getAutoDialUrl();
+        $this->assertEquals(static::TEST_AUTO_DIAL_URL, $autoDialUrl);
+
+        putenv('EVROTEL_AUTO_DIAL_URL');
+        $defaultAutoDialUrl = $this->config->getAutoDialUrl();
+        $this->assertEquals(Evrotel\ConfigInterface::DEFAULT_AUTO_DIAL_URL, $defaultAutoDialUrl);
     }
 }
