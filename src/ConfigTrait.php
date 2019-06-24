@@ -20,6 +20,8 @@ trait ConfigTrait
     /** @var string */
     protected $baseUrl = ConfigInterface::DEFAULT_BASE_URL;
 
+    protected $autoDialUrl = ConfigInterface::DEFAULT_AUTO_DIAL_URL;
+
     public function getBillCode(): int
     {
         return (int)$this->billCode;
@@ -33,5 +35,10 @@ trait ConfigTrait
     public function getBaseUrl(): string
     {
         return (string)$this->baseUrl;
+    }
+
+    public function getAutoDialUrl(): string
+    {
+        return $this->autoDialUrl;
     }
 }

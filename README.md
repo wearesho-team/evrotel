@@ -17,7 +17,9 @@ You can use [Config](./src/Config.php) to configure app.
 Also, [Environment Config](./src/EnvironmentConfig.php) available:
 - **EVROTEL_TOKEN**, string - token received from Evrotel manager
 - **EVROTEL_BILL_CODE**, integer - bill code received from Evrotel manager
-- **EVROTEL_BASE_URL**, string, default `http://m01.sipiko.net/` - base url for auto dial requests, statistics files
+- **EVROTEL_BASE_URL**, string, default `http://m01.sipiko.net/` - base url for statistics files
+- **EVROTEL_AUTO_DIAL_URL**, string, default `https://autodial.evro-tel.com.ua/autodialapi/call_worker_api.php`,
+url for auto dial requests.
 
 #### Statistics
 You can use [Config](./src/Statistics/Config.php) to configure statistics client.

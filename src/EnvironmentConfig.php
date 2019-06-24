@@ -31,4 +31,9 @@ class EnvironmentConfig extends Environment\Config implements ConfigInterface
     {
         return (string)$this->getEnv('BASE_URL', ConfigInterface::DEFAULT_BASE_URL);
     }
+
+    public function getAutoDialUrl(): string
+    {
+        return (string)$this->getEnv('AUTO_DIAL_URL', ConfigInterface::DEFAULT_AUTO_DIAL_URL);
+    }
 }

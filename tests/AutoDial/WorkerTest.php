@@ -16,7 +16,7 @@ class WorkerTest extends TestCase
 {
     protected const TOKEN = 'testToken';
     protected const BILL_CODE = 6667;
-    protected const BASE_URL = 'https://test.dev/';
+    protected const URL = 'https://test.dev/html/phpagi/call_worker_api.php';
 
     /** @var GuzzleHttp\Handler\MockHandler */
     protected $mock;
@@ -38,7 +38,12 @@ class WorkerTest extends TestCase
         $stack->push($history);
 
         $client = new GuzzleHttp\Client(['handler' => $stack,]);
-        $config = new Evrotel\Config(static::TOKEN, static::BILL_CODE, static::BASE_URL);
+        $config = new Evrotel\Config(
+            static::TOKEN,
+            static::BILL_CODE,
+            Evrotel\ConfigInterface::DEFAULT_BASE_URL,
+            static::URL
+        );
 
         $this->worker = new Evrotel\AutoDial\Worker($config, $client);
     }
@@ -95,7 +100,7 @@ class WorkerTest extends TestCase
         $this->mock->append(
             new GuzzleHttp\Exception\RequestException(
                 "Some Fail",
-                new GuzzleHttp\Psr7\Request('post', static::BASE_URL),
+                new GuzzleHttp\Psr7\Request('post', static::URL),
                 new GuzzleHttp\Psr7\Response(500, [], 'Server Error')
             )
         );

@@ -14,6 +14,7 @@ class ConfigTest extends TestCase
     protected const TEST_TOKEN = 'testToken';
     protected const TEST_BILL_CODE = 6667;
     protected const TEST_BASE_URL = 'https://test.dev/';
+    protected const TEST_AUTO_DIAL_URL = 'https://test.dev/call_worker_api.php';
 
     /** @var Evrotel\Config */
     protected $config;
@@ -24,7 +25,8 @@ class ConfigTest extends TestCase
         $this->config = new Evrotel\Config(
             static::TEST_TOKEN,
             static::TEST_BILL_CODE,
-            static::TEST_BASE_URL
+            static::TEST_BASE_URL,
+            static::TEST_AUTO_DIAL_URL
         );
     }
 
@@ -51,5 +53,11 @@ class ConfigTest extends TestCase
         $config = new Evrotel\Config(static::TEST_TOKEN, static::TEST_BILL_CODE);
         $baseUrl = $config->getBaseUrl();
         $this->assertEquals(Evrotel\ConfigInterface::DEFAULT_BASE_URL, $baseUrl);
+    }
+
+    public function testGetAutoDialUrl(): void
+    {
+        $autoDialUrl = $this->config->getAutoDialUrl();
+        $this->assertEquals(static::TEST_AUTO_DIAL_URL, $autoDialUrl);
     }
 }
