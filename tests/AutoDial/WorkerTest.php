@@ -51,7 +51,7 @@ class WorkerTest extends TestCase
     public function testRequest(): void
     {
         $this->mock->append(
-            new GuzzleHttp\Psr7\Response(200, [], Evrotel\AutoDial\Disposition::ANSWER)
+            new GuzzleHttp\Psr7\Response(200, [], strtolower(Evrotel\AutoDial\Disposition::GOOD))
         );
 
         /** @noinspection PhpUnhandledExceptionInspection */

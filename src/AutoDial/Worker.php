@@ -68,6 +68,7 @@ class Worker
             Disposition::BUSY,
             Disposition::BAD,
             Disposition::NONE,
+            Disposition::GOOD,
         ], true);
 
         if (!$isDisposition) {
