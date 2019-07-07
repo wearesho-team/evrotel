@@ -13,6 +13,6 @@ interface Disposition
     public const BUSY = 'BUSY';
     public const NO_ANSWER = 'NOANSWER';
     public const CONGESTION = 'CONGESTION';
-    public const GOOD = 'GOOD';
+    public const GOOD = 'good';
     public const NONE = 'none';
 }
