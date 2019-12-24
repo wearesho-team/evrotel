@@ -71,15 +71,15 @@ class End extends Evrotel\Receiver\Request
 
     private function validateDisposition(string $disposition): void
     {
-        $isDispositionValid = in_array($disposition, [
-            Evrotel\Call\Disposition::ANSWERED,
-            Evrotel\Call\Disposition::BUSY,
-            Evrotel\Call\Disposition::CONGESTION,
-            Evrotel\Call\Disposition::FAILED,
-            Evrotel\Call\Disposition::NO_ANSWER,
-        ]);
+        $dispositions = [
+            Evrotel\Call\Disposition::ANSWERED => 0,
+            Evrotel\Call\Disposition::BUSY => 0,
+            Evrotel\Call\Disposition::CONGESTION => 0,
+            Evrotel\Call\Disposition::FAILED => 0,
+            Evrotel\Call\Disposition::NO_ANSWER => 0,
+        ];
 
-        if (!$isDispositionValid) {
+        if (!isset($dispositions[$disposition])) {
             throw new \InvalidArgumentException("Disposition is invalid");
         }
     }
